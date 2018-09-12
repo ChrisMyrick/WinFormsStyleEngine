@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,9 +22,17 @@ namespace Examples
             Application.SetCompatibleTextRenderingDefault(false);
 
             Form _frmMain = new FormMain();
-            StyleEngine = new StyleEngine();
-            StyleEngine.ApplyStyle(_frmMain);
             _frmMain.StartPosition = FormStartPosition.CenterScreen;
+
+            Theme theme = new Theme
+            {
+                FormBackColor = Theme.BrandColors.NeutralCoolLightGrey,
+                FormBackgroundImage = null,
+                PanelBackColor = Theme.BrandColors.NeutralCoolLightBlue
+            };
+            StyleEngine = new StyleEngine(theme);
+            StyleEngine.ApplyStyle(_frmMain);
+
             Application.Run(_frmMain);
         }
     }

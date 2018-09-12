@@ -10,17 +10,17 @@ namespace WinformsStyleEngine
 {
     public class StyleEngine : IStyleEngine
     {
-        private readonly Theme _theme;
+        private Theme _theme { get; set; }            
 
-        public StyleEngine()
+        public StyleEngine(Theme theme)
         {
-            _theme = new Theme();
+            _theme = theme; 
         }
 
         /// <summary>
         /// Read settings from user preferences and update theme properties
         /// </summary>
-        public void ApplyStyleDefaults(Form form)//IView form)
+        public void ApplyStyleDefaults(Form form)
         {
             // select theme object based on user preference
             //Type program = typeof(Program);
@@ -47,7 +47,7 @@ namespace WinformsStyleEngine
             //_svmicLightTheme.FormBackgroundImage = null; // only apply the background image to the MdiParent
         }
 
-        public void ApplyStyle(Form formView)//IView formView)
+        public void ApplyStyle(Form formView)
         {
             if (!(formView is Form form)) 
             {
@@ -127,20 +127,16 @@ namespace WinformsStyleEngine
             foreach (var tbx in GetAllChildControls(form).OfType<TextBox>())
             {
                 ApplyTextboxBorder(tbx, e);
+            }
 
-                //Brush borderBrush1 = new SolidBrush(_theme.MdiClientBackAccentColor1);
-                //Pen borderPen = new Pen(borderBrush1, 2);
-                //Rectangle rect = new Rectangle(tbx.ClientRectangle.X,
-                //                               tbx.ClientRectangle.Y + 1,
-                //                               tbx.ClientRectangle.Width,
-                //                               tbx.ClientRectangle.Height);
+            foreach (var cbx in GetAllChildControls(form).OfType<ComboBox>())
+            {
+                ApplyComboBoxBorder(cbx, e);
+            }
 
-                //e.Graphics.Clear(SystemColors.Window);
-
-                //using (borderPen)
-                //{
-                //    e.Graphics.DrawRectangle(borderPen, new Rectangle(tbx.Location.X, tbx.Location.Y, tbx.ClientSize.Width - 1, tbx.ClientSize.Height - 1));
-                //}
+            foreach (var dtp in GetAllChildControls(form).OfType<DateTimePicker>())
+            {
+                ApplyDateTimeBorder(dtp, e);
             }
         }
         #endregion
@@ -159,6 +155,18 @@ namespace WinformsStyleEngine
 
             Brush brush = new SolidBrush(_theme.PanelBackColor);
             e.Graphics.FillPolygon(brush, points);
+
+
+            Brush borderBrush = new SolidBrush(_theme.PanelBorderColor);
+            Pen borderPen = new Pen(borderBrush, 2);
+            Rectangle rect = new Rectangle(panel.ClientRectangle.X,
+              panel.ClientRectangle.Y,
+              panel.ClientRectangle.Width - 1,
+              panel.ClientRectangle.Height - 1);
+
+            // Draw Borders      
+            e.Graphics.DrawRectangle(borderPen, rect);
+            borderPen.Dispose();
 
             // use Panel's OnPaint method to apply border to textbox since textbox does not inherit OnPaint event
             //foreach (var tbx in GetAllChildControls(p).OfType<TextBox>())
@@ -194,7 +202,6 @@ namespace WinformsStyleEngine
                 borderPen.Brush = borderBrush2;
                 e.Graphics.DrawLine(borderPen, new Point(rect.X, rect.Y + 2), new Point(rect.X + rect.Width, rect.Y + 2));
             }
-
         }
         #endregion
 
@@ -229,24 +236,19 @@ namespace WinformsStyleEngine
 
                 // Adding 1 pixel to either side, then adding 3 pixels up top, plus 3 down below. 
                 // This will add the necessary padding to mimic the border of a standard textbox.
-                rectangle.Inflate(1, 3);
+                rectangle.Inflate(2, 2);
 
                 tbx.BorderStyle = BorderStyle.None;
                 ControlPaint.DrawBorder(e.Graphics, rectangle, _theme.TextBoxBorderColor, ButtonBorderStyle.Solid);
             }
-            //var location = LocationOnClient(tbx);
-           
-
+            //var location = LocationOnClient(tbx);         
         }
         #endregion
 
         #region "Theme Button"
         void ApplyTheme(Button btn)
         {
-            //var width = btn.Size.Width;
-            //btn.Size = new System.Drawing.Size(width, 27);
             //btn.Font = _theme.ButtonFont;
-
             btn.BackColor = _theme.ButtonBackColor;
             btn.ForeColor = _theme.ButtonTextColor;
             btn.FlatStyle = FlatStyle.Flat;
@@ -259,7 +261,7 @@ namespace WinformsStyleEngine
         {
             Button button = (Button)sender;
             Brush borderBrush = new SolidBrush(_theme.ButtonBorderColor);
-            Pen borderPen = new Pen(borderBrush, 1);
+            Pen borderPen = new Pen(borderBrush, 2);
             Rectangle rect = new Rectangle(button.ClientRectangle.X,
               button.ClientRectangle.Y,
               button.ClientRectangle.Width - 1,
@@ -267,7 +269,6 @@ namespace WinformsStyleEngine
 
             // Draw Borders      
             e.Graphics.DrawRectangle(borderPen, rect);
-
             borderPen.Dispose();
         }
         private void OnMouseEnter_Button(object sender, EventArgs e)
@@ -286,24 +287,49 @@ namespace WinformsStyleEngine
 
         #region"Theme ComboBox"
 
-        void ApplyTheme(ComboBox c)
+        void ApplyTheme(ComboBox cbo)
         {
-            c.Font = _theme.ComboBoxFont;
-            c.ForeColor = _theme.ComboBoxTextColor;
-            c.BackColor = _theme.ComboBoxBackColor;
+            cbo.FlatStyle = FlatStyle.Flat;
+            cbo.Font = _theme.ComboBoxFont;
+            cbo.ForeColor = _theme.ComboBoxTextColor;
+            cbo.BackColor = _theme.ComboBoxBackColor;            
         }
+        void ApplyComboBoxBorder(ComboBox cbo, PaintEventArgs e)
+        {
+            Rectangle rectangle;
+            if (cbo.Parent is Form)
+            {
+                rectangle = new Rectangle(cbo.Location.X, cbo.Location.Y, cbo.ClientSize.Width, cbo.ClientSize.Height);
 
+                // Adding 1 pixel to either side, then adding 3 pixels up top, plus 3 down below. 
+                // This will add the necessary padding to mimic the border of a standard textbox.
+                rectangle.Inflate(2, 1);                
+                ControlPaint.DrawBorder(e.Graphics, rectangle, _theme.ComboBoxBorderColor, ButtonBorderStyle.Solid);
+            }  
+        }
         #endregion
 
         #region"Theme DateTimePicker"
 
-        void ApplyTheme(DateTimePicker c)
+        void ApplyTheme(DateTimePicker dtp)
         {
-            c.Font = _theme.DateTimePickerFont;
-            c.ForeColor = _theme.DateTimePickerTextColor;
-            c.BackColor = _theme.DateTimePickerBackColor;
+            dtp.Font = _theme.DateTimePickerFont;
+            dtp.ForeColor = _theme.DateTimePickerTextColor;
+            dtp.BackColor = _theme.DateTimePickerBackColor;            
         }
+        void ApplyDateTimeBorder(DateTimePicker dtp, PaintEventArgs e)
+        {
+            Rectangle rectangle;
+            if (dtp.Parent is Form)
+            {
+                rectangle = new Rectangle(dtp.Location.X, dtp.Location.Y, dtp.ClientSize.Width, dtp.ClientSize.Height);
 
+                // Adding 1 pixel to either side, then adding 3 pixels up top, plus 3 down below. 
+                // This will add the necessary padding to mimic the border of a standard textbox.
+                rectangle.Inflate(1, 1);
+                ControlPaint.DrawBorder(e.Graphics, rectangle, _theme.DateTimePickerBorderColor, ButtonBorderStyle.Solid);
+            }
+        }
         #endregion
 
         #region "Theme Label"

@@ -3,7 +3,6 @@ namespace WinformsStyleEngine
 {
     public class Theme
     {
-
         public static class Fonts
         {
             public static Font H1 = new Font("Arial", 16);
@@ -58,15 +57,15 @@ namespace WinformsStyleEngine
 
         public static class Backgrounds
         {
-            //public static Image Geometric = //Properties.Resources.Background_Geometric;
             public static Image LightBlueStripes = Properties.Resources.Background_LightBlueStripes;
+            //public static Image Geometric = //Properties.Resources.Background_Geometric;
             //public static Image SimpleGrey = //Properties.Resources.Background_SimpleGrey;
         }
 
         #region "Properties"
 
         // button
-        public Font ButtonFont { get; set; } = Theme.Fonts.H4;
+        public Font ButtonFont { get; set; } = Theme.Fonts.H6;
         public Color ButtonTextColor { get; set; } = Theme.BrandColors.PrimaryBlack;
         public Color ButtonBackColor { get; set; } = Color.White;
         public Color ButtonBorderColor { get; set; } = Theme.BrandColors.PrimaryPurple;
@@ -82,20 +81,19 @@ namespace WinformsStyleEngine
         // comboBox
         public Font ComboBoxFont { get; set; } = Theme.Fonts.H4;
         public Color ComboBoxTextColor { get; set; } = Theme.BrandColors.PrimaryBlack;
-        public Color ComboBoxBackColor { get; set; } = Color.White;
-        public Color ComboBoxBorderColor { get; set; } = Theme.BrandColors.NeutralCoolMediumGrey;
+        public Color ComboBoxBackColor { get; set; } = Theme.BrandColors.NeutralCoolLightBlue;
+        public Color ComboBoxBorderColor { get; set; } = Theme.BrandColors.PrimaryPurple;  
 
         // dateTimePicker
         public Font DateTimePickerFont { get; set; } = Theme.Fonts.H4;
         public Color DateTimePickerTextColor { get; set; } = Theme.BrandColors.PrimaryBlack;
         public Color DateTimePickerBackColor { get; set; } = Color.White;
-        public Color DateTimePickerBorderColor { get; set; } = Theme.BrandColors.NeutralCoolMediumGrey;
+        public Color DateTimePickerBorderColor { get; set; } = Theme.BrandColors.PrimaryPurple;
 
         // label
         public Font LabelFont { get; set; } = Theme.Fonts.H5;
         public Color LabelTextColor { get; set; } = Theme.BrandColors.PrimaryBlack;
         public Color LabelBackColor { get; set; } = Color.White;
-
 
         // groupBox
         public Font GroupBoxTitleFont { get; set; } = Theme.Fonts.H3;
@@ -120,14 +118,14 @@ namespace WinformsStyleEngine
 
         // panel
         public Color PanelBackColor { get; set; } = Color.White;
-        public string PanelBorderStyle { get; set; } = "classic";
+        public Color PanelBorderColor { get; set; } = Theme.BrandColors.PrimaryPurple;
+        //public string PanelBorderStyle { get; set; } = ;
         public Image PanelBackgroundImage { get; set; } = Theme.Backgrounds.LightBlueStripes;
 
         // mdi client control
         public Color MdiClientBackColor { get; set; } = SystemColors.ControlDark;
         public Color MdiClientBackAccentColor1 { get; set; } = Theme.BrandColors.PrimaryGreen;
         public Color MdiClientBackAccentColor2 { get; set; } = Theme.BrandColors.PrimaryPurple;
-
         public bool MdiClientBackgroundTexture { get; set; } = false;
 
         // dataGridView
@@ -136,7 +134,7 @@ namespace WinformsStyleEngine
         public Color DataGridViewColumnHeaderForeColor { get; set; } = Color.White;
         public Color DataGridViewSelectedRowBackColor { get; set; } = Color.LemonChiffon;
         public Color DataGridViewSelectedRowForeColor { get; set; } = BrandColors.PrimaryBlack;
-        public Color DataGridViewAlternateRowColor { get; set; } = Color.Gainsboro; //BrandColors.NeutralCoolLightGrey;
+        public Color DataGridViewAlternateRowColor { get; set; } = Color.Gainsboro;
         public Color DataGridViewBorderColor { get; set; } = BrandColors.PrimaryPurple;
         public Font DataGridViewColumnHeaderFont { get; set; } = Theme.Fonts.H5Bold;
 

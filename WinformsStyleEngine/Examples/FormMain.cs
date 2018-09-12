@@ -25,5 +25,10 @@ namespace Examples
             childForm.StartPosition = FormStartPosition.CenterScreen;
             childForm.Show();
         }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+            comboBox1.SelectedIndex = 0;
+        }
     }
 }
