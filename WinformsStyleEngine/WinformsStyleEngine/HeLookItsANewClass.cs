@@ -8,5 +8,6 @@ namespace WinformsStyleEngine
 {
     class HeLookItsANewClass
     {
+        //Adding some comments
     }
 }
